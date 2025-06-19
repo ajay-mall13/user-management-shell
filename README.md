@@ -1,70 +1,66 @@
-# User Management Script
+# 🧑‍💻 User Management Shell Script
 
-This Bash script automates the process of creating a Linux user, setting their password, updating the password, and deleting the user. It also verifies whether the user has been deleted from the system.
+This is a simple and interactive Bash script for basic user account management tasks on a Linux system. It supports the following operations:
+- Listing users and their user IDs
+- Creating new user accounts
+- Resetting passwords
+- Deleting existing user accounts
 
-## Features
+## 🔧 Features
 
-- Prompt for username and password
-- Create a new user with a home directory
-- Change the user's password
-- Delete the user from the system
-- Verify user deletion from `/etc/passwd`
+- ✅ List all system users with their IDs  
+- ✅ Create a user with a password  
+- ✅ Reset a user's password  
+- ✅ Delete a user and their home directory  
 
-## Requirements
+## 🚀 Getting Started
 
-- Linux system with `bash`, `sudo`, `useradd`, `passwd`, and `userdel` commands
-- Script must be run with a user who has `sudo` privileges
-
-## Usage
-
-1. Make the script executable:
-
-   ```bash
-   chmod 764 user_script.sh
-   ```
-
-2. Run the script:
-
-   ```bash
-   ./user_script.sh
-   ```
-
-3. Follow the prompts:
-
-   - Enter a **username**
-   - Enter an **initial password**
-   - Enter a **new password** (to simulate password update)
-   - The script will then delete the user and confirm the deletion
-
-## Example Output
-
-```
-Creation of user
-Enter the username: testuser
-Enter the password:
-Creation complete
-Changing password for testuser
-Enter new password:
-Password successfully changed for testuser
-Deletion of user
-0
-As wc is 0, username is deleted
+### 📂 Clone the Repository
+```bash
+git clone https://github.com/your-username/user-management-shell.git
+cd user-management-shell
 ```
 
-## Warning
-
-- This script **deletes the user** after creation and password change, so it's only meant for testing or learning purposes.
-- Do **not** use this in production systems without modification.
-
-## Script Flow Summary
-
+### 📝 Make the Script Executable
+```bash
+chmod +x user_manage.sh
 ```
-1. Prompt for username and password
-2. Create the user
-3. Set the initial password
-4. Change the password
-5. Delete the user
-6. Confirm deletion
+
+## 🧪 Usage
+
+Run the script with one of the following options:
+
+```bash
+./user_manage.sh --list     # List all users and IDs
+./user_manage.sh --create   # Create a new user
+./user_manage.sh --reset    # Reset a user's password
+./user_manage.sh --delete   # Delete a user
+```
+
+## ⚠️ Requirements
+
+- You need **sudo** privileges to add, reset, or delete users.
+- Tested on **Ubuntu/Linux** environments.
+
+## 📂 Script Breakdown
+
+- `list_user`: Displays all system users and their IDs.
+- `user_create`: Prompts for a new username and password, then creates the user.
+- `reset_pass`: Allows password reset for existing users.
+- `delete_account`: Deletes the user account and their home directory.
+
+## 📸 Example
+
+```bash
+./user_manage.sh --create
+
+Enter username: testuser
+Enter password:
+================= SUCCESSFULLY CREATED =================
 ```
 
 
+
+---
+
+✅ Feel free to modify or improve the script as needed for your environment.
