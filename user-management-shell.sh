@@ -1,34 +1,77 @@
+
 #!/bin/bash
 
-echo "Creation of user"
-read -p "Enter the username: " username
-read -s -p "Enter the password: " password
-echo
+list_user() {
+  echo "---------- PRINTING USER & ID ----------"
+  cut -d: -f1,3 /etc/passwd
+}
 
-# Create user
-sudo useradd -m "$username"
-echo -e "$password\n$password" | sudo passwd "$username"
+user_create() {
+  read -p "Enter username: " username
 
-echo "Creation complete"
+  if id "$username" &>/dev/null; then
+    echo "Error: Username '$username' already exists."
+    return 1
+  fi
 
-# Change password
-echo "Changing password for $username"
-read -s -p "Enter new password: " new_password
-echo
-echo -e "$new_password\n$new_password" | sudo passwd "$username"
-echo "Password successfully changed for $username"
+  sudo useradd "$username"
 
-# Delete user
-sudo userdel "$username"
-echo "Deletion of user"
+  read -s -p "Enter password: " password
+  echo
+  echo "$username:$password" | sudo chpasswd
 
-# Check if user still exists
-count=$(cat /etc/passwd | grep "$username" | wc -l | awk '{print $1}')
-echo "$count"
+  echo "================= SUCCESSFULLY CREATED ================="
+}
 
-# Final message
-if [ "$count" -eq 0 ]; then
-    echo "As wc is 0, username is deleted"
-else
-    echo "Username still exists"
-fi
+reset_pass() {
+  read -p "Enter username: " username
+
+  if id "$username" &>/dev/null; then
+    read -s -p "Enter the new password: " password
+    echo
+    echo "$username:$password" | sudo chpasswd
+    echo "Successfully reset password for '$username'!"
+  else
+    echo "Error: User '$username' does not exist."
+    return 1
+  fi
+}
+
+delete_account() {
+  read -p "Enter the username to delete: " username
+
+  if ! id "$username" &>/dev/null; then
+    echo "Error: Username '$username' does not exist."
+    return 1
+  fi
+
+  sudo userdel -r "$username"
+
+  echo "============= USER '$username' DELETED ================"
+}
+
+case "$1" in
+  --list)
+    list_user
+    ;;
+  --create)
+    user_create
+    ;;
+  --reset)
+    reset_pass
+    ;;
+  --delete)
+    delete_account
+    ;;
+  *)
+    echo "Invalid option: $1"
+    echo "Usage: $0 [OPTION]"
+    echo "Options:"
+    echo "  --list          List all users and their IDs."
+    echo "  --create        Create a new user account."
+    echo "  --reset         Reset a user's password."
+    echo "  --delete        Delete an existing user account."
+    return 1
+    ;;
+esac
+
