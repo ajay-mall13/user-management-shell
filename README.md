@@ -37,7 +37,6 @@ This Bash script automates the process of creating a Linux user, setting their p
    - The script will then delete the user and confirm the deletion
 
 ## Example Output
-![Screenshot 2025-06-19 095427](https://github.com/user-attachments/assets/e2da8eea-78f3-4ebe-82ea-9e0f57a82a07)
 
 ```
 Creation of user
